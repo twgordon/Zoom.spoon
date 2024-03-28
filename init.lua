@@ -165,9 +165,9 @@ function obj:_change(changeEvent)
 end
 
 function obj:getAudioStatus()
-  if _check({"Meeting", "Unmute Audio"}) then
+  if _check({"Meeting", "Unmute Audio"}) or _check({"Meeting", "Unmute audio"}) then
     return 'muted'
-  elseif _check({"Meeting", "Mute Audio"}) then
+  elseif _check({"Meeting", "Mute Audio"}) or _check({"Meeting", "Mute audio"}) then
     return 'unmuted'
   else
     return 'off'
@@ -224,7 +224,7 @@ end
 --- Method
 --- Mutes the audio in Zoom, if Zoom is currently unmuted
 function obj:mute()
-  if obj:getAudioStatus() == 'unmuted' and self:_click({"Meeting", "Mute Audio"}) then
+  if obj:getAudioStatus() == 'unmuted' and (self:_click({"Meeting", "Mute Audio"}) or self:_click({"Meeting", "Mute audio"})) then
     audioStatus = 'muted'
     self:_change("muted")
   end
@@ -234,7 +234,7 @@ end
 --- Method
 --- Unmutes the audio in Zoom, if Zoom is currently muted
 function obj:unmute()
-  if obj:getAudioStatus() == 'muted' and self:_click({"Meeting", "Unmute Audio"}) then
+  if obj:getAudioStatus() == 'muted' and (self:_click({"Meeting", "Unmute Audio"}) or self:_click({"Meeting", "Unmute audio"})) then
     audioStatus = 'unmuted'
     self:_change("unmuted")
   end
