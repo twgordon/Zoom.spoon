@@ -109,6 +109,8 @@ local zoomLaunched = function(app)
       zoomState:startMeeting()
     elseif(eventName == "AXWindowCreated" and windowTitle == "Zoom") then
       zoomState:start()
+    elseif(eventName == "AXWindowCreated" and windowTitle == "Zoom Workplace") then
+      zoomState:start()
     elseif(eventName == "AXWindowCreated" and windowTitle:sub(1, #"zoom share") == "zoom share") then
       zoomState:startShare()
     elseif(eventName == "AXUIElementDestroyed") then
@@ -128,7 +130,7 @@ appWatcher = hs.application.watcher.new(function (appName, eventType, appObject)
   if (appName == "zoom.us" and eventType == hs.application.watcher.launched) then
     zoomLaunched(appObject)
 
-  elseif (eventType == hs.application.watcher.terminated) then
+  elseif (appName == "zoom.us" and eventType == hs.application.watcher.terminated) then
     if (watcher ~= nil) then
       watcher:stop()
       if zoomState:is('meeting') then endMeetingDebouncer:start() end
@@ -145,7 +147,7 @@ function obj:start()
   -- if it is, then the watcher will never receive the "launched" event
   -- so we send it manually to ensure its internal watch on the zoom UI
   -- is setup correctly
-  app = hs.application.find("zoom.us")
+  app = hs.application.get("zoom.us")
   if (app ~= nil) then
     zoomLaunched(app)
   end
